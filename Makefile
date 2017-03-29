@@ -679,6 +679,7 @@ EXTRA_CFLAGS += -Wno-unused
 SUBARCH := $(shell uname -m | sed -e s/i.86/i386/)
 ARCH ?= $(SUBARCH)
 endif
+MODPATH ?= /lib/modules/$(shell uname -r)
 
 export RT28xx_DIR RT28xx_MODE KSRC CROSS_COMPILE CROSS_COMPILE_INCLUDE PLATFORM RELEASE CHIPSET MODULE  KSRC HAS_WOW_SUPPORT
 
@@ -703,6 +704,10 @@ clean:
 
 installfw:
 	cp -n firmware/* /lib/firmware
+
+install:
+	@cp ${MODULE}.ko ${MODPATH}/kernel/drivers/net/wireless/
+	@depmod
 
 help:
 	@echo "options :"
