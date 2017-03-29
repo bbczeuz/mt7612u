@@ -431,7 +431,13 @@ static int CFG80211_OpsScan(
 	RTMP_DRIVER_NET_DEV_GET(pAd, &pNdev);
 
 	/* YF_TODO: record the scan_req per netdevice */
+#if 0 /* bbczeuz: replaced */
 	RTMP_DRIVER_80211_CB_GET(pAd, &pCfg80211_CB);
+#else
+	CFG80211DRV_IoctlHandle(pAd, NULL, CMD_RTPRIV_IOCTL_80211_CB_GET, 0, &pCfg80211_CB, 0);
+	if (pCfg80211_CB == NULL)
+		return -EINVAL;
+#endif
 	pCfg80211_CB->pCfg80211_ScanReq = pRequest; /* used in scan end */
 
 	if (pNdev->ieee80211_ptr->iftype == NL80211_IFTYPE_AP) {
